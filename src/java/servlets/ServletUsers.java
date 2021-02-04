@@ -76,7 +76,6 @@ public class ServletUsers extends HttpServlet {
                 
             }else if(action.equals("creerUnUtilisateur")){
                 creerUtilisateur(request);
-                
                  Collection<User> liste = Server.uh.getUsers();
                 request.setAttribute("listeDesUsers", liste);
                
