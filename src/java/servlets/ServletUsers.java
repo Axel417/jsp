@@ -6,6 +6,7 @@ package servlets;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -82,6 +83,21 @@ public class ServletUsers extends HttpServlet {
                 forwardTo = "index.jsp?action=listerLesUtilisateurs";
                 message = "utilisateurs créé ";
             }
+             else if (action.equals("chercherParLogin")) {
+                User user = rechercherUser(request);
+                ArrayList<User> liste = new ArrayList<User>();
+                liste.add(user);
+                request.setAttribute("listeDesUsers", liste);
+                forwardTo = "index.jsp?action=listerLesUtilisateurs";
+                message = "Tout est bien";
+            }
+            else if (action.equals("updateUtilisateur")) {
+                modifierUser(request);
+                Collection<User> liste = Server.uh.getUsers();
+                request.setAttribute("listeDesUsers", liste);
+                forwardTo = "index.jsp?action=listerLesUtilisateurs";
+                message = "Tout est bien : Utilisateur modifié !";
+            }
             else {
                 forwardTo = "index.jsp?action=todo";
                 message = "La fonctionnalité pour le paramètre " + action + " est à implémenter !";
@@ -123,6 +139,20 @@ public class ServletUsers extends HttpServlet {
         }
 
     }
+    
+     public User rechercherUser(HttpServletRequest request) {
+        String login;
+        login = request.getParameter("login");
+        return Server.uh.getUserFromLogin(login);
+    }
+    public void modifierUser(HttpServletRequest request) {
+        String login, nom, prenom;
+        nom = request.getParameter("nom");
+        prenom = request.getParameter("prenom");
+        login = request.getParameter("login");
+        Server.uh.updateUser(login,login,nom,prenom);
+    }
+    
 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
