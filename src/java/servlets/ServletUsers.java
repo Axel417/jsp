@@ -5,7 +5,10 @@
 package servlets;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -27,7 +30,7 @@ import utilisateurs.modeles.User;
 @WebServlet(name = "ServletUsers",
      urlPatterns = {"/ServletUsers"},
      initParams = {
-         @WebInitParam(name = "ressourceDir", value = "C:\\Users\\amoss\\TPJsp")
+         @WebInitParam(name = "ressourceDir", value = "D:\\tp02")
      }
 )
 public class ServletUsers extends HttpServlet {
@@ -63,7 +66,24 @@ public class ServletUsers extends HttpServlet {
                 request.setAttribute("listeDesUsers", liste);
                 forwardTo = "index.jsp?action=listerLesUtilisateurs";
                 message = "Liste des utilisateurs";
-            } else {
+            }else if(action.equals("creerUtilisateursDeTest")){
+                creeUtilisateurDeTest();
+                 Collection<User> liste = Server.uh.getUsers();
+                request.setAttribute("listeDesUsers", liste);
+               
+                forwardTo = "index.jsp?action=listerLesUtilisateurs";
+                message = "Les 3 nouveaux utilisateurs ont été créé ";
+                
+            }else if(action.equals("creerUnUtilisateur")){
+                creerUtilisateur(request);
+                
+                 Collection<User> liste = Server.uh.getUsers();
+                request.setAttribute("listeDesUsers", liste);
+               
+                forwardTo = "index.jsp?action=listerLesUtilisateurs";
+                message = "utilisateurs créé ";
+            }
+            else {
                 forwardTo = "index.jsp?action=todo";
                 message = "La fonctionnalité pour le paramètre " + action + " est à implémenter !";
             }
@@ -74,6 +94,37 @@ public class ServletUsers extends HttpServlet {
         // Après un forward, plus rien ne peut être exécuté après !
 
     }
+    
+    private void creeUtilisateurDeTest(){
+        try {
+            User user1 = new User("AxelKoffi","koffi","Axel");
+            User user2 = new User("AxelSoro","Soro","Axel");
+            User user3 = new User("AxelKarimou","karimou","Axel");
+            Server.uh.addUser(user1);
+            Server.uh.addUser(user2);
+            Server.uh.addUser(user3);
+        
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(ServletUsers.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    public void creerUtilisateur(HttpServletRequest request) {
+        String login, nom, prenom;
+        nom = request.getParameter("nom");
+        prenom = request.getParameter("prenom");
+        login = request.getParameter("login");
+        try {
+            User user = new User(login, nom, prenom);
+            Server.uh.addUser(user);
+            
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(ServletUsers.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 

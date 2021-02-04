@@ -16,6 +16,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Gestionnaire d'utilisateurs</title>
     </head>
+   <!- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
     <body>
         <h1>Gestionnaire d'utilisateurs</h1>
 
@@ -37,7 +39,8 @@
             <li><a href="ServletUsers?action=creerUtilisateursDeTest">Créer 4 utilisateurs de test</a></li>
 
             <li>Créer un utilisateur</li>
-            <form action="ServletUsers" method="get">
+            
+            <form action="ServletUsers" method="post">
                 Nom : <input type="text" name="nom"/><br>
                 Prénom : <input type="text" name="prenom"/><br>
                 Login : <input type="text" name="login"/><br>
